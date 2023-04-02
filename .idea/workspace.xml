@@ -5,29 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5455f5d2-99aa-4902-9e6e-6e17e44bcd34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scala_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/build.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/plugins.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/migrations/V0002__create-user-table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/reference.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/App.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Application.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Error.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/HelloWorldService.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Logging.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Settings.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/database/Database.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/database/Migrations.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/users/UsersRepository.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/users/UsersService.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/migrations/V0002__create-user-table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/migrations/V0002__create-user-table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Application.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Application.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/HelloWorldService.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/database/Database.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/database/Database.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

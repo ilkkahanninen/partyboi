@@ -1,6 +1,7 @@
 package org.jumalauta.partyboi
 
 import database.{Database, Migrations}
+import users.UsersService
 
 import cats.effect.IO
 import org.http4s.HttpApp
@@ -10,12 +11,12 @@ class Application {
   val settings: Settings = Settings.load
 
   lazy val db: Database = new Database(settings.db)
-  lazy val helloWorld = new HelloWorldService(this)
+  lazy val users: UsersService = new UsersService(db)
 
   lazy val httpApp: HttpApp[IO] = Logger.httpApp(
     logHeaders = true,
     logBody = true,
   )(
-    helloWorld.routes
+    users.routes.orNotFound
   )
 }

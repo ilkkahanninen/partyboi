@@ -16,17 +16,4 @@ class Database(settings: DatabaseSettings) {
       database  = settings.database,
       password  = Some(settings.password),
     )
-
-  val query: Query[Void, Testi] =
-    sql"SELECT * FROM test"
-      .query(int4 ~ text)
-      .gmap[Testi]
-
-  val testValues: IO[List[Testi]] =
-    session.use(_.execute(query))
 }
-
-case class Testi(
-    id: Int,
-    value: String,
-)
