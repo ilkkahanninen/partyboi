@@ -13,6 +13,8 @@ jobs:
       run: |
         docker compose --file docker-compose-dev.yml up db -d
         gradle test
+        docker compose --file docker-compose-dev.yml down
+        rm -rf data
     - name: Build and publish
       run: |
         docker login -u ilkkahanninen -p ${{ secrets.DOCKER_PASSWORD }}
