@@ -1,0 +1,112 @@
+package party.jml
+
+import arrow.core.Either
+import io.ktor.client.*
+import io.ktor.client.plugins.cookies.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.server.config.*
+import io.ktor.server.testing.*
+import it.skrape.core.htmlDocument
+import it.skrape.matchers.toBe
+import it.skrape.selects.Doc
+import party.jml.partyboi.AppServices
+import party.jml.partyboi.data.AppError
+import party.jml.partyboi.data.Validateable
+import party.jml.partyboi.form.FileUpload
+import party.jml.partyboi.services
+import kotlin.reflect.full.memberProperties
+import kotlin.test.assertEquals
+
+interface PartyboiTester {
+    fun test(block: suspend ApplicationTestBuilder.(TestHtmlClient) -> Unit) {
+        testApplication {
+            environment { config = ApplicationConfig("tests.yaml") }
+            val client = createClient { install(HttpCookies) }
+            block(TestHtmlClient(client))
+        }
+    }
+}
+
+class TestHtmlClient(val client: HttpClient) {
+    suspend fun <T> get(
+        urlString: String,
+        expectedStatus: HttpStatusCode = HttpStatusCode.OK,
+        block: (Doc.() -> T)
+    ): T {
+        client.get(urlString).apply {
+            assertEquals(expectedStatus, status)
+            return htmlDocument(bodyAsText()) {
+                relaxed = true
+                block()
+            }
+        }
+    }
+
+    suspend fun <T> post(
+        urlString: String,
+        formData: List<PartData>,
+        block: (Doc.(Headers) -> T)
+    ): T {
+        client.submitFormWithBinaryData(
+            url = urlString,
+            formData = formData
+        ).apply {
+            return htmlDocument(bodyAsText()) {
+                relaxed = true
+                block(headers)
+            }
+        }
+    }
+
+    suspend inline fun <reified T : Validateable<T>, A> post(
+        urlString: String,
+        obj: Validateable<T>,
+        noinline block: (Doc.(Headers) -> A)
+    ): A {
+        val map = T::class.memberProperties.associate { it.name to it.getter.call(obj) }
+        val data = formData {
+            map.forEach {
+                when (val value = it.value) {
+                    is FileUpload -> append(it.key, value.toByteArray(), headers {
+                        append("Content-Type", "application/octet-stream")
+                        append("Content-Disposition", "form-data; name=\"file\"; filename=\"${value.name}\"")
+                    })
+
+                    else -> append(it.key, value.toString())
+                }
+            }
+        }
+        return post(urlString, data, block)
+    }
+
+    suspend fun login(username: String = "user", password: String = "password") {
+        post("/register", formData {
+            append("name", username)
+            append("password", password)
+            append("password2", password)
+        }) {}
+
+        post("/login", formData {
+            append("name", username)
+            append("password", password)
+        }) {
+
+        }
+    }
+}
+
+fun Headers.redirectsTo(urlString: String) {
+    this["Location"]?.trim().toBe(urlString.trim())
+}
+
+fun <T> ApplicationTestBuilder.services(block: AppServices.() -> Either<AppError, T>) {
+    application {
+        services().block().onLeft {
+            throw it.throwable ?: RuntimeException(it.message)
+        }
+    }
+}
